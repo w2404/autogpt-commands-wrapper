@@ -14,7 +14,7 @@ class Server(BaseHTTPRequestHandler):
         o=json.loads(self.rfile.read(length))
         print(o)
         o=lib.main(o)
-        print(o)
+        #print(o)
         self._set_headers()
         self.wfile.write(json.dumps(o).encode())
 
