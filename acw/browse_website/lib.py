@@ -32,13 +32,13 @@ def main(obj):
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.TAG_NAME, "body"))
         )
-        return {}
+        return ''
     elif obj['command']=='add_header':
         driver.execute_script(obj['header'])
-        return {}
+        return ''
     elif obj['command']=='execute_script':
-        return {'value':driver.execute_script(obj['script'])}
+        return driver.execute_script(obj['script'])
     elif obj['command']=='page_source': 
-        return {'value':driver.page_source}
+        return driver.page_source
 
     #driver.quit()
