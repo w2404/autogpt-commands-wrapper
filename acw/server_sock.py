@@ -14,8 +14,8 @@ def run(func,port):
         def handle(self):
             size=readnum(self.rfile)
             s= self.rfile.read(size)
+            print(s[:40])
             o=json.loads(s) 
-            print(o)
             s=func(o)
             if s is None:s=''
             print(s[:40])

@@ -6,19 +6,17 @@ from . import config
 
 
 def main(o):
-    os.makedirs(config.path_log+'/responses/',exist_ok=True)
-    os.makedirs(config.path_log+'/prompts/',exist_ok=True)
+    os.makedirs(config.path_log+'/em-responses/',exist_ok=True)
+    os.makedirs(config.path_log+'/em-prompts/',exist_ok=True)
 
     i_log=int(time.time()*10)
-    with open(config.path_log+f'/prompts/{i_log}.json','w') as f:
+    with open(config.path_log+f'/em-prompts/{i_log}.json','w') as f:
         json.dump(o,f,indent='  ',ensure_ascii=False)
-
-    assert o['deployment_id'] is None 
 
     headers = {"Authorization": "Bearer " + config.key, "Content-Type": "application/json"}
     proxies = {'http': config.proxy, 'https': config.proxy}
-    u = 'https://api.openai.com/v1/chat/completions'
-    data = {"model": o['model'], "messages": o['messages'], "temperature": o['temperature'],"max_tokens":o["max_tokens"]}
+    u = 'https://api.openai.com/v1/embeddings'
+    data = {"model": o['model'], "input": o['input'], }
     while True:
         #基本上这里都是手操，所以完全可以try except
         try:
@@ -34,10 +32,9 @@ def main(o):
             print('connection error')
             time.sleep(1)
             pass
-    with open(config.path_log+f'/responses/{i_log}.json','w') as f:
+    with open(config.path_log+f'/em-responses/{i_log}.json','w') as f:
         json.dump(o,f,indent='  ',ensure_ascii=False)
-    return config.path_log+f'/responses/{i_log}.json'
-    #直接返回的时候，出现了一些json编码错误的问题
+    return config.path_log+f'/em-responses/{i_log}.json'
     #return o
 #    choi=o['choices']
 #    x = json.loads(r.content, object_hook=lambda d: SimpleNamespace(**d))
